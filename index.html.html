@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Youth Demand Scorecard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2F5F8; --surface:#FFFFFF; --ink:#0F2233; --muted:#4C6177; --line:#D3DCE5;
+  --accent:#14507F; --accent-ink:#FFFFFF;
+  --strong:#0B7A75; --strong-bg:#DDF2EF;
+  --partial:#8F5A00; --partial-bg:#FBEBCB;
+  --none:#4F5370; --none-bg:#E6E7F0;
+  --mark:#FFE9A8;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C1620; --surface:#13222F; --ink:#E7EEF5; --muted:#9DB0C2; --line:#27394A;
+    --accent:#7FB4E6; --accent-ink:#0C1620;
+    --strong:#4FD1C5; --strong-bg:#12403E;
+    --partial:#F2B655; --partial-bg:#4A3511;
+    --none:#B3B6D6; --none-bg:#2A2C42;
+    --mark:#5A4A12;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0C1620; --surface:#13222F; --ink:#E7EEF5; --muted:#9DB0C2; --line:#27394A;
+  --accent:#7FB4E6; --accent-ink:#0C1620;
+  --strong:#4FD1C5; --strong-bg:#12403E;
+  --partial:#F2B655; --partial-bg:#4A3511;
+  --none:#B3B6D6; --none-bg:#2A2C42;
+  --mark:#5A4A12;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  font-size:17px; line-height:1.55;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 18px 80px}
+h1{font-size:clamp(1.9rem,4.5vw,2.8rem);line-height:1.12;margin:0 0 10px;letter-spacing:-0.01em}
+h2{font-size:1.3rem;margin:0 0 6px}
+p{margin:0 0 10px}
+.lede{max-width:62ch;color:var(--muted);font-size:1.08rem}
+.rule{max-width:62ch;margin-top:14px;padding:12px 14px;border-left:4px solid var(--accent);background:var(--surface);border-radius:0 8px 8px 0}
+section{margin-top:36px}
+.sectionhead{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
+.stepno{flex:none;width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-weight:700}
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:760px){.panels{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}
+label{font-weight:700;display:block;margin-bottom:6px}
+.hint{color:var(--muted);font-size:.93rem;margin:0 0 8px}
+textarea,input[type=text],select{
+  width:100%;font:inherit;color:var(--ink);background:var(--bg);
+  border:1px solid var(--line);border-radius:8px;padding:9px 10px;
+}
+textarea{min-height:210px;resize:vertical}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button{
+  font:inherit;font-weight:700;cursor:pointer;border-radius:8px;padding:10px 16px;
+  border:1px solid var(--accent);background:var(--surface);color:var(--accent);
+}
+button.primary{background:var(--accent);color:var(--accent-ink)}
+button:hover{filter:brightness(1.06)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
+.status{min-height:1.4em;color:var(--muted);margin-top:8px}
+.banner{margin-top:12px;padding:10px 14px;border-radius:8px;background:var(--partial-bg);color:var(--ink);border:1px solid var(--partial)}
+.progressrow{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:12px}
+.bar{flex:1 1 220px;height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--accent);width:0}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:16px;overflow:hidden}
+.item .top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:0}
+@media (max-width:760px){.item .top{grid-template-columns:1fr}}
+.demand{padding:14px;border-right:1px solid var(--line);background:linear-gradient(0deg,transparent,transparent)}
+@media (max-width:760px){.demand{border-right:0;border-bottom:1px solid var(--line)}}
+.did{display:inline-block;font-weight:700;color:var(--accent);margin-bottom:4px}
+.cands{padding:14px}
+.cand{padding:10px 0;border-bottom:1px dashed var(--line)}
+.cand:last-child{border-bottom:0}
+.cmeta{display:flex;align-items:center;gap:10px;margin-bottom:4px;font-size:.93rem}
+.ref{font-weight:700}
+.sim{flex:0 0 90px;height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.sim>i{display:block;height:100%;background:var(--strong)}
+.pct{color:var(--muted)}
+mark{background:var(--mark);color:inherit;border-radius:3px;padding:0 2px}
+.empty{color:var(--muted);font-style:italic}
+.review{padding:12px 14px;border-top:1px solid var(--line);display:grid;grid-template-columns:auto 1fr 1fr;gap:14px;align-items:end}
+@media (max-width:760px){.review{grid-template-columns:1fr}}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{font-weight:700;padding:0;margin-bottom:6px}
+.radios{display:flex;gap:8px;flex-wrap:wrap}
+.radios input{position:absolute;opacity:0;pointer-events:none}
+.radios label{
+  display:inline-block;margin:0;padding:7px 13px;border:2px solid var(--line);border-radius:99px;
+  font-weight:700;cursor:pointer;background:var(--bg)
+}
+.radios input:focus-visible+label{outline:3px solid var(--accent);outline-offset:2px}
+.radios input[value=strong]:checked+label{border-color:var(--strong);background:var(--strong-bg);color:var(--strong)}
+.radios input[value=partial]:checked+label{border-color:var(--partial);background:var(--partial-bg);color:var(--partial)}
+.radios input[value=none]:checked+label{border-color:var(--none);background:var(--none-bg);color:var(--none)}
+.field label{font-weight:400;font-size:.93rem;color:var(--muted)}
+.filters{display:flex;gap:8px;margin-left:auto}
+.filters button[aria-pressed=true]{background:var(--accent);color:var(--accent-ink)}
+.summary{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px}
+.stack{display:flex;height:22px;border-radius:6px;overflow:hidden;background:var(--line);margin:10px 0 14px}
+.stack i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:10px}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.dot{width:14px;height:14px;border-radius:4px;display:inline-block}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+th,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.tablewrap{overflow-x:auto;margin-top:8px}
+.tag{font-weight:700;padding:2px 9px;border-radius:99px;white-space:nowrap}
+.tag.strong{background:var(--strong-bg);color:var(--strong)}
+.tag.partial{background:var(--partial-bg);color:var(--partial)}
+.tag.none{background:var(--none-bg);color:var(--none)}
+.tag.unrated{background:var(--line);color:var(--muted)}
+footer{margin-top:40px;color:var(--muted);font-size:.93rem;max-width:70ch}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Youth Demand Scorecard</h1>
+  <p class="lede">Line up each youth demand against the final decision text, then rate what you find. The tool suggests where to look. You decide.</p>
+  <p class="rule"><strong>A match means the topic appears.</strong> It does not mean the demand was met. Every rating should point to a paragraph a person has read. Everything stays in your browser and nothing is uploaded.</p>
+</header>
+
+<section aria-labelledby="s1">
+  <div class="sectionhead"><span class="stepno" aria-hidden="true">1</span><h2 id="s1">Add the texts</h2></div>
+  <div class="panels">
+    <div class="panel">
+      <label for="demandsIn">Youth demands</label>
+      <p class="hint">One demand per line. Optional ID first: <em>G-01 | demand text</em>.</p>
+      <textarea id="demandsIn" spellcheck="false" placeholder="G-01 | Paste a demand here"></textarea>
+    </div>
+    <div class="panel">
+      <label for="parasIn">Decision paragraphs</label>
+      <p class="hint">Separate paragraphs with a blank line. Optional reference first: <em>1/CMA.7 ¶12 | paragraph text</em>.</p>
+      <textarea id="parasIn" spellcheck="false" placeholder="1/CMA.7 ¶12 | Paste a paragraph here"></textarea>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="primary" id="goBtn" type="button">Find matches</button>
+    <button id="demoBtn" type="button">Load demo texts</button>
+    <button id="clearBtn" type="button">Clear everything</button>
+  </div>
+  <p class="status" id="status" role="status" aria-live="polite"></p>
+  <div id="demoBanner" class="banner" hidden>Demo texts are invented examples, not real documents. Do not share results from them.</div>
+</section>
+
+<section aria-labelledby="s2" id="reviewSection" hidden>
+  <div class="sectionhead"><span class="stepno" aria-hidden="true">2</span><h2 id="s2">Review the matches</h2></div>
+  <div class="progressrow">
+    <span id="progressText" aria-live="polite"></span>
+    <div class="bar" aria-hidden="true"><i id="progressBar"></i></div>
+    <div class="filters" role="group" aria-label="Filter demands">
+      <button type="button" id="fAll" aria-pressed="true">All</button>
+      <button type="button" id="fOpen" aria-pressed="false">Unrated only</button>
+    </div>
+  </div>
+  <div id="list"></div>
+</section>
+
+<section aria-labelledby="s3" id="summarySection" hidden>
+  <div class="sectionhead"><span class="stepno" aria-hidden="true">3</span><h2 id="s3">Scorecard</h2></div>
+  <div class="summary">
+    <div class="legend" id="legend"></div>
+    <div class="stack" id="stack" role="img" aria-label="Share of demands by rating"></div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Demand</th><th>Rating</th><th>Paragraph</th><th>Note</th></tr></thead>
+      <tbody id="resultRows"></tbody>
+    </table></div>
+    <div class="actions">
+      <button class="primary" id="csvBtn" type="button">Download CSV</button>
+      <button id="jsonBtn" type="button">Save work (JSON)</button>
+      <button id="loadBtn" type="button">Load saved work</button>
+      <input type="file" id="loadFile" accept="application/json" hidden>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Rating guide. <strong>Strong:</strong> the decision text contains the same ask. <strong>Partial:</strong> a related topic is mentioned, but weaker or different. <strong>None:</strong> no related text found after reading the closest paragraphs. Similarity is based on shared words, not meaning, so read the paragraphs yourself.</p>
+</footer>
+</div>
+
+<script>
+/*PURE-START*/
+const STOP = new Set("a an the and or of to in on for with by as at from that this these those is are be been was were it its their they them we our you your not no but if than then so such into over under between among through per all any each other more most also may shall should would could can will which who whom whose while where when how why what has have had having do does did done i he she his her parties party about without within including include includes".split(" "));
+function stem(w){
+  if(w.length>4){
+    if(w.endsWith("ies")) return w.slice(0,-3)+"y";
+    if(w.endsWith("ing")) return w.slice(0,-3);
+    if(w.endsWith("ed")) return w.slice(0,-2);
+    if(w.endsWith("es")) return w.slice(0,-2);
+    if(w.endsWith("s") && !w.endsWith("ss")) return w.slice(0,-1);
+  }
+  return w;
+}
+function toks(text){
+  return (String(text).toLowerCase().match(/[a-z]+/g)||[])
+    .filter(w=>w.length>2 && !STOP.has(w)).map(stem).filter(w=>w.length>2);
+}
+function parseDemands(raw){
+  const out=[]; let n=0;
+  String(raw).split(/\r?\n/).forEach(line=>{
+    const t=line.trim(); if(!t) return;
+    n++;
+    const m=t.match(/^([^|]{1,14})\|\s*(.+)$/);
+    if(m) out.push({id:m[1].trim(), text:m[2].trim()});
+    else out.push({id:"D-"+String(n).padStart(2,"0"), text:t});
+  });
+  return out;
+}
+function parseParas(raw){
+  const out=[]; let n=0;
+  String(raw).split(/\n\s*\n/).forEach(block=>{
+    const t=block.trim(); if(!t) return;
+    n++;
+    const m=t.match(/^([^|]{1,40})\|\s*([\s\S]+)$/);
+    if(m) out.push({ref:m[1].trim(), text:m[2].trim().replace(/\s+/g," ")});
+    else out.push({ref:"\u00B6"+n, text:t.replace(/\s+/g," ")});
+  });
+  return out;
+}
+function computeMatches(demands, paras){
+  const N=paras.length;
+  const pt=paras.map(p=>toks(p.text));
+  const df=new Map();
+  pt.forEach(ts=>new Set(ts).forEach(w=>df.set(w,(df.get(w)||0)+1)));
+  const idf=w=>Math.log((N+1)/((df.get(w)||0)+1))+1;
+  const vec=ts=>{
+    const tf=new Map(); ts.forEach(w=>tf.set(w,(tf.get(w)||0)+1));
+    const v=new Map(); let norm=0;
+    tf.forEach((c,w)=>{const x=c*idf(w); v.set(w,x); norm+=x*x;});
+    return {v,norm:Math.sqrt(norm)};
+  };
+  const pv=pt.map(vec);
+  return demands.map(d=>{
+    const dv=vec(toks(d.text));
+    const scored=pv.map((p,i)=>{
+      let dot=0; const shared=new Set();
+      dv.v.forEach((x,w)=>{ if(p.v.has(w)){dot+=x*p.v.get(w); shared.add(w);} });
+      const s=(dv.norm&&p.norm)? dot/(dv.norm*p.norm):0;
+      return {i,score:s,shared};
+    }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,3);
+    return scored;
+  });
+}
+/*PURE-END*/
+
+const $=id=>document.getElementById(id);
+const KEY="youth-demand-scorecard-v1";
+let state={demands:[],paras:[],matches:[],review:{},demo:false,filter:"all"};
+
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function highlight(text,shared){
+  let out="",last=0;
+  text.replace(/[A-Za-z]+/g,(m,off)=>{
+    out+=esc(text.slice(last,off));
+    out+= shared.has(stem(m.toLowerCase())) ? "<mark>"+esc(m)+"</mark>" : esc(m);
+    last=off+m.length; return m;
+  });
+  return out+esc(text.slice(last));
+}
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} }
+function load(){
+  try{ const raw=localStorage.getItem(KEY); if(raw){ const s=JSON.parse(raw); if(s&&s.demands) state=Object.assign(state,s); } }catch(e){}
+}
+function setStatus(msg){ $("status").textContent=msg; }
+
+function runMatch(){
+  const demands=parseDemands($("demandsIn").value);
+  const paras=parseParas($("parasIn").value);
+  if(!demands.length){ setStatus("Add at least one demand, one per line."); return; }
+  if(!paras.length){ setStatus("Add at least one decision paragraph, separated by blank lines."); return; }
+  state.demands=demands; state.paras=paras;
+  state.matches=computeMatches(demands,paras).map(list=>list.map(x=>({i:x.i,score:x.score,shared:[...x.shared]})));
+  const keep={}; demands.forEach(d=>{ if(state.review[d.id]) keep[d.id]=state.review[d.id]; });
+  state.review=keep;
+  save(); setStatus(demands.length+" demands matched against "+paras.length+" paragraphs. Now read each match and rate it.");
+  renderAll(); $("reviewSection").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function renderList(){
+  const host=$("list"); host.innerHTML="";
+  state.demands.forEach((d,idx)=>{
+    const r=state.review[d.id]||{};
+    if(state.filter==="open" && r.rating) return;
+    const cands=state.matches[idx]||[];
+    const candHtml=cands.length? cands.map(c=>{
+      const p=state.paras[c.i]; const pct=Math.round(c.score*100);
+      return '<div class="cand"><div class="cmeta"><span class="ref">'+esc(p.ref)+'</span><span class="sim" role="img" aria-label="Word similarity '+pct+' percent"><i style="width:'+pct+'%"></i></span><span class="pct">'+pct+'% shared wording</span></div><p>'+highlight(p.text,new Set(c.shared))+'</p></div>';
+    }).join("") : '<p class="empty">No shared wording found. Search the decision text by hand before rating this as none.</p>';
+    const opts='<option value="">Not chosen</option>'+cands.map(c=>{const ref=state.paras[c.i].ref; return '<option value="'+esc(ref)+'"'+(r.ref===ref?" selected":"")+'>'+esc(ref)+'</option>';}).join("")+'<option value="other"'+(r.ref==="other"?" selected":"")+'>Other (write it in the note)</option>';
+    const rad=["strong","partial","none"].map(v=>'<input type="radio" name="r-'+idx+'" id="r-'+idx+'-'+v+'" value="'+v+'"'+(r.rating===v?" checked":"")+'><label for="r-'+idx+'-'+v+'">'+v.charAt(0).toUpperCase()+v.slice(1)+'</label>').join("");
+    const el=document.createElement("article"); el.className="item"; el.dataset.idx=idx;
+    el.innerHTML='<div class="top"><div class="demand"><span class="did">'+esc(d.id)+'</span><p>'+esc(d.text)+'</p></div><div class="cands">'+candHtml+'</div></div>'+
+      '<div class="review"><fieldset><legend>Your rating</legend><div class="radios">'+rad+'</div></fieldset>'+
+      '<div class="field"><label for="p-'+idx+'">Paragraph you relied on</label><select id="p-'+idx+'">'+opts+'</select></div>'+
+      '<div class="field"><label for="n-'+idx+'">Note</label><input type="text" id="n-'+idx+'" value="'+esc(r.note||"")+'" placeholder="Why this rating?"></div></div>';
+    host.appendChild(el);
+  });
+  if(!host.children.length) host.innerHTML='<p class="empty">Every demand has a rating. Check the scorecard below.</p>';
+}
+function counts(){
+  const c={strong:0,partial:0,none:0,unrated:0};
+  state.demands.forEach(d=>{const r=(state.review[d.id]||{}).rating; c[r||"unrated"]++;});
+  return c;
+}
+function renderProgress(){
+  const n=state.demands.length, c=counts(), done=n-c.unrated;
+  $("progressText").textContent=done+" of "+n+" rated";
+  $("progressBar").style.width=(n?Math.round(done/n*100):0)+"%";
+}
+function renderSummary(){
+  const n=state.demands.length, c=counts();
+  const defs=[["strong","Strong","var(--strong)"],["partial","Partial","var(--partial)"],["none","None","var(--none)"],["unrated","Unrated","var(--line)"]];
+  $("legend").innerHTML=defs.map(x=>'<span><i class="dot" style="background:'+x[2]+'"></i>'+x[1]+": <strong>"+c[x[0]]+"</strong></span>").join("");
+  $("stack").innerHTML=defs.map(x=>'<i style="width:'+(n?c[x[0]]/n*100:0)+'%;background:'+x[2]+'"></i>').join("");
+  $("stack").setAttribute("aria-label","Strong "+c.strong+", partial "+c.partial+", none "+c.none+", unrated "+c.unrated+" of "+n+" demands");
+  $("resultRows").innerHTML=state.demands.map(d=>{
+    const r=state.review[d.id]||{}; const k=r.rating||"unrated";
+    return "<tr><td><strong>"+esc(d.id)+"</strong> "+esc(d.text)+'</td><td><span class="tag '+k+'">'+(k.charAt(0).toUpperCase()+k.slice(1))+"</span></td><td>"+esc(r.ref&&r.ref!=="other"?r.ref:(r.ref==="other"?"See note":""))+"</td><td>"+esc(r.note||"")+"</td></tr>";
+  }).join("");
+}
+function renderAll(){
+  const has=state.demands.length>0;
+  $("reviewSection").hidden=!has; $("summarySection").hidden=!has;
+  $("demoBanner").hidden=!state.demo;
+  if(has){ renderList(); renderProgress(); renderSummary(); }
+}
+
+$("list").addEventListener("change",e=>{
+  const item=e.target.closest(".item"); if(!item) return;
+  const idx=+item.dataset.idx, d=state.demands[idx]; if(!d) return;
+  const r=state.review[d.id]=state.review[d.id]||{};
+  if(e.target.type==="radio") r.rating=e.target.value;
+  if(e.target.tagName==="SELECT") r.ref=e.target.value;
+  save(); renderProgress(); renderSummary();
+});
+$("list").addEventListener("input",e=>{
+  if(e.target.type!=="text") return;
+  const item=e.target.closest(".item"); if(!item) return;
+  const d=state.demands[+item.dataset.idx];
+  const r=state.review[d.id]=state.review[d.id]||{};
+  r.note=e.target.value; save(); renderSummary();
+});
+
+$("goBtn").onclick=()=>{ state.demo = state.demo && $("demandsIn").value.indexOf("DEMO")===0; runMatch(); };
+$("demoBtn").onclick=()=>{
+  $("demandsIn").value=[
+    "DEMO-1 | Provide menstrual hygiene supplies and private sanitation in flood shelters.",
+    "DEMO-2 | Fund youth-led adaptation projects through direct access for local groups.",
+    "DEMO-3 | Create a national registry of ocean cleanup volunteers."
+  ].join("\n");
+  $("parasIn").value=[
+    "DEMO \u00B61 | Parties are invited to consider hygiene and sanitation needs, including for women and girls, in emergency shelters after floods.",
+    "DEMO \u00B62 | Parties are encouraged to scale up finance for adaptation, including direct access for local communities.",
+    "DEMO \u00B63 | The meeting notes the importance of ocean observation systems."
+  ].join("\n\n");
+  state.demo=true; state.review={}; runMatch();
+};
+$("clearBtn").onclick=()=>{
+  if(!confirm("Clear all texts and ratings from this browser?")) return;
+  state={demands:[],paras:[],matches:[],review:{},demo:false,filter:"all"};
+  $("demandsIn").value=""; $("parasIn").value=""; try{localStorage.removeItem(KEY);}catch(e){}
+  setStatus("Cleared."); renderAll();
+};
+function setFilter(f){
+  state.filter=f; $("fAll").setAttribute("aria-pressed",f==="all"); $("fOpen").setAttribute("aria-pressed",f==="open"); renderList();
+}
+$("fAll").onclick=()=>setFilter("all"); $("fOpen").onclick=()=>setFilter("open");
+
+function download(name,mime,text){
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([text],{type:mime})); a.download=name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function csvCell(v){ v=String(v==null?"":v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; }
+$("csvBtn").onclick=()=>{
+  const rows=[["id","demand","rating","paragraph_ref","paragraph_text","note"]];
+  state.demands.forEach((d,i)=>{
+    const r=state.review[d.id]||{}; let ptxt="";
+    if(r.ref&&r.ref!=="other"){ const p=state.paras.find(p=>p.ref===r.ref); if(p) ptxt=p.text; }
+    rows.push([d.id,d.text,r.rating||"unrated",r.ref&&r.ref!=="other"?r.ref:"",ptxt,r.note||""]);
+  });
+  download((state.demo?"DEMO-":"")+"youth-demand-scorecard.csv","text/csv;charset=utf-8","\uFEFF"+rows.map(r=>r.map(csvCell).join(",")).join("\n"));
+};
+$("jsonBtn").onclick=()=>download((state.demo?"DEMO-":"")+"scorecard-work.json","application/json",JSON.stringify(state,null,2));
+$("loadBtn").onclick=()=>$("loadFile").click();
+$("loadFile").onchange=e=>{
+  const f=e.target.files[0]; if(!f) return;
+  f.text().then(t=>{
+    try{
+      const s=JSON.parse(t);
+      if(!s||!Array.isArray(s.demands)||!Array.isArray(s.paras)) throw new Error("bad");
+      state=Object.assign({demands:[],paras:[],matches:[],review:{},demo:false,filter:"all"},s);
+      $("demandsIn").value=state.demands.map(d=>d.id+" | "+d.text).join("\n");
+      $("parasIn").value=state.paras.map(p=>p.ref+" | "+p.text).join("\n\n");
+      save(); setStatus("Saved work loaded."); renderAll();
+    }catch(err){ setStatus("That file could not be read. Choose a JSON file saved from this tool."); }
+  });
+};
+
+load();
+if(state.demands.length){
+  $("demandsIn").value=state.demands.map(d=>d.id+" | "+d.text).join("\n");
+  $("parasIn").value=state.paras.map(p=>p.ref+" | "+p.text).join("\n\n");
+}
+renderAll();
+</script>
+</body>
+</html>
